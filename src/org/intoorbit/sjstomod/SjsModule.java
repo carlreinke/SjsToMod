@@ -385,12 +385,28 @@ public class SjsModule
         // SJS allows for some initial set-up rows which we try to collapse
         int collapsedRowCount = rowCount % 64;
         
+        for (int v = 0; v < voices.length; ++v)
+        {
+            Voice voice = voices[v];
+            
+            for (int r = 0; r < collapsedRowCount; ++r)
+            {
+                Note note = voice.notes.get(r);
+                
+                if (note == null)
+                    continue;
+                
+                if (note.semitone != 0)
+                    collapsedRowCount = 0;
+            }
+        }
+        
         ProtrackerModule ptModule = new ProtrackerModule();
         
         for (int i = 0; i < ptSamples.length; ++i)
             ptModule.samples[i] = ptSamples[i];
         
-        int patternCount = (rowCount - collapsedRowCount) / 64;
+        int patternCount = (rowCount - collapsedRowCount - 1) / 64 + 1;
         
         for (int i = 0; i < patternCount; ++i)
             ptModule.patternTable.add(i);
@@ -444,9 +460,6 @@ public class SjsModule
                 
                 if (note == null)
                     continue;
-                
-                if (note.semitone != 0)
-                    throw new UnsupportedOperationException("non-multiple of 64 rows");
                 
                 int ptEffect = translateEffectToProtracker(note.effect);
                 
@@ -566,6 +579,13 @@ public class SjsModule
             {
                 ProtrackerModule.Sample sample = ptModule.samples[i];
                 
+                if (sample == null)
+                {
+                    sample = new ProtrackerModule.Sample();
+                    ptModule.samples[i] = sample;
+                    sample.setVolume(63);
+                }
+                    
                 sample.setVolume(sample.getVolume() * sampleVolume / 63);
             }
         }
@@ -678,7 +698,7 @@ public class SjsModule
             // could go out-of-sync, but this effect only ever appears
             // synchronized at the end of modules, so we don't bother trying to
             // translate it)
-            ptEffect = 0;
+            ptEffect = 0xB00;
         }
         else if (effect == 0xdf)
         {

@@ -64,36 +64,13 @@ public class Main
 
         String moduleName = modulePath.getFileName().toString();
         
-        Path moduleDirectoryPath = modulePath.getParent();
+        Path moduleDirectoryPath = modulePath.toAbsolutePath().getParent();
         
-        File levelDataFile = moduleDirectoryPath.resolve("leveldata").toFile();
-
         ProtrackerModule.Sample[] ptSamples = new ProtrackerModule.Sample[16];
         
         try
         {
-            RandomAccessFile levelDataDataInputFile = new RandomAccessFile(levelDataFile, "r");
-            
-            String[] sampleNames = SjsModule.determineSampleNames(levelDataDataInputFile, moduleName);
-            
-            if (sampleNames != null)
-            {
-                for (int i = 0; i < sampleNames.length; ++i)
-                {
-                    if (sampleNames[i] != null)
-                    {
-                        File sampleFile = moduleDirectoryPath.resolve(sampleNames[i]).toFile();
-
-                        FileInputStream sampleStream = new FileInputStream(sampleFile);
-
-                        Iff8svx sample = Iff8svx.loadForm(sampleStream);
-
-                        ptSamples[i] = sample.toProtracker();
-                        
-                        ptSamples[i].setName(sampleNames[i]);
-                    }
-                }
-            }
+            loadSamples(moduleDirectoryPath, moduleName, ptSamples);
         }
         catch (IOException ex)
         {
@@ -115,8 +92,6 @@ public class Main
         
         ptModule.setTitle(moduleName);
         
-        // ptModule.dump();
-        
         try
         {
             ptModule.save(outStream);
@@ -125,6 +100,47 @@ public class Main
         {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(-1);
+        }
+    }
+
+    private static void loadSamples( Path moduleDirectoryPath, String moduleName, ProtrackerModule.Sample[] ptSamples ) throws IOException
+    {
+        File levelDataFile = moduleDirectoryPath.resolve("leveldata").toFile();
+        if (!levelDataFile.exists())
+        {
+            System.err.println("cannot determine samples: missing 'leveldata'");
+            return;
+        }
+        
+        RandomAccessFile levelDataDataInputFile = new RandomAccessFile(levelDataFile, "r");
+
+        String[] sampleNames = SjsModule.determineSampleNames(levelDataDataInputFile, moduleName);
+
+        if (sampleNames == null)
+        {
+            System.err.println("cannot determine samples: no entry in 'leveldata'");
+            return;
+        }
+
+        for (int i = 0; i < sampleNames.length; ++i)
+        {
+            if (sampleNames[i] == null)
+                continue;
+
+            File sampleFile = moduleDirectoryPath.resolve(sampleNames[i]).toFile();
+            if (!sampleFile.exists())
+            {
+                System.err.printf("missing sample '%s'\n", sampleNames[i]);
+                continue;
+            }
+
+            FileInputStream sampleStream = new FileInputStream(sampleFile);
+
+            Iff8svx sample = Iff8svx.loadForm(sampleStream);
+
+            ptSamples[i] = sample.toProtracker();
+
+            ptSamples[i].setName(sampleNames[i]);
         }
     }
 }
