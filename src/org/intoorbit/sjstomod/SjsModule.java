@@ -407,11 +407,6 @@ public class SjsModule
         for (int i = 0; i < ptSamples.length; ++i)
             ptModule.samples[i] = ptSamples[i];
         
-        int patternCount = (rowCount - collapsedRowCount - 1) / 64 + 1;
-        
-        for (int i = 0; i < patternCount; ++i)
-            ptModule.patternTable.add(i);
-        
         for (int patternStartRow = collapsedRowCount; patternStartRow < rowCount; patternStartRow += 64)
         {
             ProtrackerModule.Pattern ptPattern = new ProtrackerModule.Pattern();
@@ -438,18 +433,34 @@ public class SjsModule
                         
                         ptNote.setEffect(translateEffectToProtracker(note));
 
-                        ptPattern.notes[r][v] = ptNote;
+                        if (!ptNote.isEmpty())
+                            ptPattern.notes[r][v] = ptNote;
                     }
                 }
             }
             
-            ptModule.patterns.add(ptPattern);
+            if (patternStartRow == collapsedRowCount)
+                translateInitialEffects(collapsedRowCount, ptPattern);
+            
+            int patternIndex;
+            
+            for (patternIndex = 0; patternIndex < ptModule.patterns.size(); ++patternIndex)
+                if (ptModule.patterns.get(patternIndex).equals(ptPattern))
+                    break;
+            
+            if (patternIndex == ptModule.patterns.size())
+                ptModule.patterns.add(ptPattern);
+            
+            ptModule.patternTable.add(patternIndex);
         }
         
         translateVolumeToProtracker(ptModule);
-        
-        ProtrackerModule.Pattern firstPtPattern = ptModule.patterns.get(ptModule.patternTable.get(0));
-        
+                
+        return ptModule;
+    }
+
+    private void translateInitialEffects( int collapsedRowCount, ProtrackerModule.Pattern firstPtPattern )
+    {
         // best-effort placment of effects from collapsed rows
         for (int v = 0; v < voices.length; ++v)
         {
@@ -467,7 +478,13 @@ public class SjsModule
                 if (ptEffect != 0)
                 {
                     ProtrackerModule.Note ptNote = firstPtPattern.notes[0][v];
-                
+                    
+                    if (ptNote == null)
+                    {
+                        ptNote = new ProtrackerModule.Note();
+                        firstPtPattern.notes[0][v] = ptNote;
+                    }
+                    
                     if (ptNote.getEffect() != 0)
                         throw new UnsupportedOperationException("irreconcilible initial effects");
                     
@@ -538,8 +555,6 @@ public class SjsModule
             
             throw new UnsupportedOperationException("irreconcilable initial effects");
         }
-        
-        return ptModule;
     }
     
     // the SJS files from the Lemmings games never change the volume after

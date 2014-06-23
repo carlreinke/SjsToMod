@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -21,7 +22,7 @@ public class ProtrackerModule
         107, 101, 95, 90, 85, 80, 75, 71, 67, 63, 60, 56,
         };
 
-    static int getPeriod( int i )
+    public static int getPeriod( int i )
     {
         return periodTable[i];
     }
@@ -311,6 +312,20 @@ public class ProtrackerModule
         private int sample;
         private int effect;
 
+        @Override
+        public boolean equals( Object o )
+        {
+            if (o instanceof Note)
+            {
+                Note other = (Note)o;
+                return period == other.period &&
+                        sample == other.sample &&
+                        effect == other.effect;
+            }
+            
+            return false;
+        }
+
         public int getPeriod()
         {
             return period;
@@ -350,6 +365,11 @@ public class ProtrackerModule
             this.effect = effect;
         }
 
+        public boolean isEmpty()
+        {
+            return equals(empty);
+        }
+        
         private void validate()
         {
             // TODO
@@ -360,6 +380,18 @@ public class ProtrackerModule
     {
         public final Note[][] notes = new Note[64][4];
 
+        @Override
+        public boolean equals( Object o )
+        {
+            if (o instanceof Pattern)
+            {
+                Pattern other = (Pattern)o;
+                return Arrays.deepEquals(notes, other.notes);
+            }
+            
+            return false;
+        }
+        
         private void validate()
         {
             for (Note[] row : notes)
