@@ -220,14 +220,15 @@ public class SjsModule
                 else if (note.effect <= 0x42)
                 {
                     assert(note.effect >= 0x03);
-                    // set voice volume
-                    effectNotation = String.format("V%02x", note.effect - 0x03);
+                    // set voice volume (persistent)
+                    effectNotation = String.format("V%02X", note.effect - 0x03);
                 }
                 else if (note.effect == 0x43)
                 {
-                    // disable voice DMA
-                    // (it is unclear what effect this should have)
-                    effectNotation = "...";
+                    // disable voice DMA (i.e., cut previous note)
+                    effectNotation = note.semitone == 0 || note.sample == 0 ?
+                            "C00" /* or "0xEC0" */ :
+                            "...";
                 }
                 else if (note.effect <= 0x56)
                 {
@@ -251,50 +252,50 @@ public class SjsModule
                 {
                     assert(note.effect >= 0xa7);
                     // unknown op 6
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect <= 0xba)
                 {
                     assert(note.effect >= 0xb1);
                     // unknown op 7
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect <= 0xce)
                 {
                     assert(note.effect >= 0xbb);
                     // unknown op 8
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xcf)
                 {
                     // unknown op 9
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xd0)
                 {
                     // unknown op 10
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xd1)
                 {
                     // unknown op 11
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect <= 0xdb)
                 {
                     assert(note.effect >= 0xd2);
                     // unknown op 12
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xdc)
                 {
                     // unknown op 13
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xdd)
                 {
                     // unknown op 14
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xde)
                 {
@@ -304,69 +305,69 @@ public class SjsModule
                 else if (note.effect == 0xdf)
                 {
                     // unknown op 16
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xe0)
                 {
                     // unknown op 17
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xe1)
                 {
                     // unknown op 18
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xe2)
                 {
                     // unknown op 19
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xe3)
                 {
                     // unknown op 20
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xe4)
                 {
                     // unknown op 21
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect <= 0xf8)
                 {
                     assert(note.effect >= 0xe5);
                     // unknown op 22
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xf9)
                 {
                     // unknown op 23
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xfa)
                 {
                     // unknown op 24
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xfb)
                 {
                     // unknown op 25
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xfc)
                 {
                     // unknown op 26
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect == 0xfd)
                 {
                     // unknown op 27
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else if (note.effect <= 0xff)
                 {
                     assert(note.effect >= 0xfe);
                     // no op
-                    effectNotation = String.format("?%02x", note.effect);
+                    effectNotation = String.format("?%02X", note.effect);
                 }
                 else
                 {
@@ -435,7 +436,7 @@ public class SjsModule
                         
                         ptNote.setSample(note.sample);
                         
-                        ptNote.setEffect(translateEffectToProtracker(note.effect));
+                        ptNote.setEffect(translateEffectToProtracker(note));
 
                         ptPattern.notes[r][v] = ptNote;
                     }
@@ -461,7 +462,7 @@ public class SjsModule
                 if (note == null)
                     continue;
                 
-                int ptEffect = translateEffectToProtracker(note.effect);
+                int ptEffect = translateEffectToProtracker(note);
                 
                 if (ptEffect != 0)
                 {
@@ -540,7 +541,7 @@ public class SjsModule
         
         return ptModule;
     }
-
+    
     // the SJS files from the Lemmings games never change the volume after
     // initially setting it, so we just apply the volume to the samples
     private void translateVolumeToProtracker( ProtrackerModule ptModule ) throws UnsupportedOperationException
@@ -593,105 +594,106 @@ public class SjsModule
 
     // the SJS files from the Lemmings games use very few of the effects, so
     // most of them are untranslated
-    private static int translateEffectToProtracker( int effect ) throws IllegalStateException
+    private static int translateEffectToProtracker( Note note ) throws IllegalStateException
     {
         int ptEffect;
         
-        if (effect == 0x00)
+        if (note.effect == 0x00)
         {
             // no op
             ptEffect = 0;
         }
-        else if (effect == 0x01)
+        else if (note.effect == 0x01)
         {
             // disable high-cut filter
             ptEffect = 0xE01;
         }
-        else if (effect == 0x02)
+        else if (note.effect == 0x02)
         {
             // enable high-cut filter
             ptEffect = 0xE00;
         }
-        else if (effect <= 0x42)
+        else if (note.effect <= 0x42)
         {
-            assert(effect >= 0x03);
+            assert(note.effect >= 0x03);
             // set voice volume (persistent)
             ptEffect = 0;
         }
-        else if (effect == 0x43)
+        else if (note.effect == 0x43)
         {
-            // disable voice DMA
-            // (it is unclear what effect this should have)
-            ptEffect = 0;
+            // disable voice DMA (i.e., cut previous note)
+            ptEffect = note.semitone == 0 || note.sample == 0 ?
+                    0xC00 /* or 0xEC0 */ :
+                    0;
         }
-        else if (effect <= 0x56)
+        else if (note.effect <= 0x56)
         {
-            assert(effect >= 0x44);
+            assert(note.effect >= 0x44);
             // no op
             ptEffect = 0;
         }
-        else if (effect <= 0x88)
+        else if (note.effect <= 0x88)
         {
-            assert(effect >= 0x57);
+            assert(note.effect >= 0x57);
             // delay voice rows
             ptEffect = 0;
         }
-        else if (effect <= 0xa6)
+        else if (note.effect <= 0xa6)
         {
-            assert(effect >= 0x89);
+            assert(note.effect >= 0x89);
             // no op
             ptEffect = 0;
         }
-        else if (effect <= 0xb0)
+        else if (note.effect <= 0xb0)
         {
-            assert(effect >= 0xa7);
+            assert(note.effect >= 0xa7);
             // unknown op 6
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect <= 0xba)
+        else if (note.effect <= 0xba)
         {
-            assert(effect >= 0xb1);
+            assert(note.effect >= 0xb1);
             // unknown op 7
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect <= 0xce)
+        else if (note.effect <= 0xce)
         {
-            assert(effect >= 0xbb);
+            assert(note.effect >= 0xbb);
             // unknown op 8
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xcf)
+        else if (note.effect == 0xcf)
         {
             // unknown op 9
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xd0)
+        else if (note.effect == 0xd0)
         {
             // unknown op 10
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xd1)
+        else if (note.effect == 0xd1)
         {
             // unknown op 11
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect <= 0xdb)
+        else if (note.effect <= 0xdb)
         {
-            assert(effect >= 0xd2);
+            assert(note.effect >= 0xd2);
             // unknown op 12
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xdc)
+        else if (note.effect == 0xdc)
         {
             // unknown op 13
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xdd)
+        else if (note.effect == 0xdd)
         {
             // unknown op 14
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xde)
+        else if (note.effect == 0xde)
         {
             // repeat voice
             // (voice row positions are independent of one another in SJS and 
@@ -700,70 +702,70 @@ public class SjsModule
             // translate it)
             ptEffect = 0xB00;
         }
-        else if (effect == 0xdf)
+        else if (note.effect == 0xdf)
         {
             // unknown op 16
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xe0)
+        else if (note.effect == 0xe0)
         {
             // unknown op 17
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xe1)
+        else if (note.effect == 0xe1)
         {
             // unknown op 18
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xe2)
+        else if (note.effect == 0xe2)
         {
             // unknown op 19
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xe3)
+        else if (note.effect == 0xe3)
         {
             // unknown op 20
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xe4)
+        else if (note.effect == 0xe4)
         {
             // unknown op 21
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect <= 0xf8)
+        else if (note.effect <= 0xf8)
         {
-            assert(effect >= 0xe5);
+            assert(note.effect >= 0xe5);
             // unknown op 22
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xf9)
+        else if (note.effect == 0xf9)
         {
             // unknown op 23
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xfa)
+        else if (note.effect == 0xfa)
         {
             // unknown op 24
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xfb)
+        else if (note.effect == 0xfb)
         {
             // unknown op 25
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xfc)
+        else if (note.effect == 0xfc)
         {
             // unknown op 26
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect == 0xfd)
+        else if (note.effect == 0xfd)
         {
             // unknown op 27
             throw new IllegalStateException("unknown effect");
         }
-        else if (effect <= 0xff)
+        else if (note.effect <= 0xff)
         {
-            assert(effect >= 0xfe);
+            assert(note.effect >= 0xfe);
             // no op
             ptEffect = 0;
         }

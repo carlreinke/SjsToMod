@@ -81,7 +81,7 @@ public class Iff8svx
                         throw new IllegalStateException();
                     if (sample.repeatHighOctaveSamples < 0)
                         throw new IllegalStateException();
-                    if (sample.samplesPerHighOctaveCycle != 32)
+                    if (sample.samplesPerHighOctaveCycle != 0 && sample.samplesPerHighOctaveCycle != 32)
                         throw new IllegalStateException();
                     if (sample.octaveCount != 1)
                         throw new IllegalStateException();

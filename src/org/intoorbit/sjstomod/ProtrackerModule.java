@@ -99,7 +99,7 @@ public class ProtrackerModule
 
                     String effectNotation = note.effect == 0 ?
                             "..." :
-                            String.format("%03x", note.effect);
+                            String.format("%03X", note.effect);
                 
                     System.out.printf(" | %s %s .. %s", noteNotation, sampleNotation, effectNotation);
                 }
