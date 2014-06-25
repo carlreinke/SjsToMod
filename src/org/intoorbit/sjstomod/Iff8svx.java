@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 /**
  *
@@ -134,6 +135,7 @@ public class Iff8svx
     
     private byte[] body = new byte[0];
     
+    // TODO: ProTracker requires sample offset/lengths to be multiples of 2 bytes
     public ProtrackerModule.Sample toProtracker()
     {
         ProtrackerModule.Sample sample = new ProtrackerModule.Sample();
@@ -148,6 +150,10 @@ public class Iff8svx
         
         if (name != null)
             sample.setName(name);
+        
+        byte[] body;
+        int highOctaveSamples = oneShotHighOctaveSamples + repeatHighOctaveSamples;
+        body = Arrays.copyOf(this.body, highOctaveSamples);
         
         sample.setSample(body);
         
