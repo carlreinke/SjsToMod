@@ -135,7 +135,7 @@ public class Iff8svx
     
     private byte[] body = new byte[0];
     
-    // TODO: ProTracker requires sample offset/lengths to be multiples of 2 bytes
+    // TODO: Protracker requires sample offset/lengths to be multiples of 2 bytes
     public ProtrackerModule.Sample toProtracker()
     {
         ProtrackerModule.Sample sample = new ProtrackerModule.Sample();

@@ -45,10 +45,10 @@ public class Main
             System.exit(-1);
         }
         
-        SjsModule module = null;
+        SoundPlayerModule module = null;
         try
         {
-            module = SjsModule.load(moduleStream);
+            module = SoundPlayerModule.load(moduleStream);
         }
         catch (IOException ex)
         {
@@ -114,7 +114,7 @@ public class Main
         
         RandomAccessFile levelDataDataInputFile = new RandomAccessFile(levelDataFile, "r");
 
-        String[] sampleNames = SjsModule.determineSampleNames(levelDataDataInputFile, moduleName);
+        String[] sampleNames = SoundPlayerModule.determineSampleNames(levelDataDataInputFile, moduleName);
 
         if (sampleNames == null)
         {

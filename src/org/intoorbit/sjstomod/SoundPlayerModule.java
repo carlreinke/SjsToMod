@@ -14,13 +14,13 @@ import org.intoorbit.sjstomod.utils.StringUtils;
  *
  * @author mindless
  */
-public class SjsModule
+public class SoundPlayerModule
 {
-    public static SjsModule load( InputStream inStream ) throws IOException
+    public static SoundPlayerModule load( InputStream inStream ) throws IOException
     {
         DataInputStream in = new DataInputStream(inStream);
         
-        SjsModule module = new SjsModule();
+        SoundPlayerModule module = new SoundPlayerModule();
         
         module.delay = in.readUnsignedByte();
         module.delay |= in.readUnsignedByte() << 8;
