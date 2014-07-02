@@ -1,0 +1,16 @@
+SJS-to-MOD
+==========
+
+SJS-to-MOD is a tool for converting the music from the Lemmings games on the
+Amiga from SoundPlayer modules to approximately equivalent Protracker modules.
+
+The following games used SoundPlayer modules:
+ - Lemmings
+ - Oh No! More Lemmings
+ - Holiday Lemmings 1993
+ - Holiday Lemmings 1994
+
+License
+-------
+
+Mozilla Public License 2.0
