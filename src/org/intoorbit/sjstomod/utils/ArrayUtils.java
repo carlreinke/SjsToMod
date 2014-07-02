@@ -1,3 +1,10 @@
+/* 
+ * Copyright (c) 2014 Carl Reinke
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package org.intoorbit.sjstomod.utils;
 
 /**
@@ -6,6 +13,10 @@ package org.intoorbit.sjstomod.utils;
  */
 public class ArrayUtils
 {
+    private ArrayUtils()
+    {
+    }
+    
     public static int binarySearchReverse( int[] array, int key )
     {
         if (array.length == 0)
