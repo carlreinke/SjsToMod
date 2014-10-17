@@ -234,7 +234,7 @@ public class SoundPlayerModule
                 {
                     // disable voice DMA (i.e., cut previous note)
                     effectNotation = note.semitone == 0 || note.sample == 0 ?
-                            "C00" /* or "0xEC0" */ :
+                            "C00" /* or "EC0" */ :
                             "...";
                 }
                 else if (note.effect <= 0x56)
@@ -539,7 +539,7 @@ public class SoundPlayerModule
         if (tpd != 6)
             firstRowPtEffects.add(0xf00 | tpd);
         
-        // best-effort palement of tempo effect
+        // best-effort placement of tempo effect
         nextFirstRowEffect:
         for (int ptEffect : firstRowPtEffects)
         {
